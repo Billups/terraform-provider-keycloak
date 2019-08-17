@@ -20,13 +20,13 @@ resource "keycloak_realm" "test" {
 		starttls              = true
 		envelope_from         = "nottom@myhost.com"
 
-		auth  = {
+		auth = {
 			username = "tom"
 			password = "tom"
 		}
 	}
 
-  	account_theme = "base"
+	account_theme = "base"
 
 	access_code_lifespan = "30m"
 
@@ -41,13 +41,13 @@ resource "keycloak_realm" "test" {
 
 	security_defenses = {
 		headers = {
-			x_frame_options = "DENY"
-			content_security_policy = "frame-src 'self'; frame-ancestors 'self'; object-src 'none';"
+			x_frame_options                     = "DENY"
+			content_security_policy             = "frame-src 'self'; frame-ancestors 'self'; object-src 'none';"
 			content_security_policy_report_only = ""
-			x_content_type_options = "nosniff"
-			x_robots_tag = "none"
-			x_xss_protection = "1; mode=block"
-			strict_transport_security = "max-age=31536000; includeSubDomains"
+			x_content_type_options              = "nosniff"
+			x_robots_tag                        = "none"
+			x_xss_protection                    = "1; mode=block"
+			strict_transport_security           = "max-age=31536000; includeSubDomains"
 		}
 	}
 
@@ -55,20 +55,20 @@ resource "keycloak_realm" "test" {
 }
 
 resource "keycloak_required_action" "custom-terms-and-conditions" {
-	realm_id		= "${keycloak_realm.test.realm}"
-	alias			= "terms_and_conditions"
-	default_action 	= true
-	enabled			= true
-	name			= "Custom Terms and Conditions"
+	realm_id       = "${keycloak_realm.test.realm}"
+	alias          = "terms_and_conditions"
+	default_action = true
+	enabled        = true
+	name           = "Custom Terms and Conditions"
 }
 
 resource "keycloak_required_action" "custom-configured_totp" {
-	realm_id		= "${keycloak_realm.test.realm}"
-	alias			= "CONFIGURE_TOTP"
-	default_action 	= true
-	enabled			= true
-	name			= "Custom configure totp"
-	priority		= "${keycloak_required_action.custom-terms-and-conditions.priority+15}"
+	realm_id       = "${keycloak_realm.test.realm}"
+	alias          = "CONFIGURE_TOTP"
+	default_action = true
+	enabled        = true
+	name           = "Custom configure totp"
+	priority       = "${keycloak_required_action.custom-terms-and-conditions.priority+15}"
 }
 
 resource "keycloak_group" "foo" {
@@ -114,7 +114,7 @@ resource "keycloak_user" "user_with_password" {
 	last_name  = "Tester"
 
 	initial_password {
-		value     = "my password"
+		value     = "My password"
 		temporary = false
 	}
 }
@@ -135,7 +135,8 @@ resource "keycloak_openid_client" "test_client" {
 	realm_id    = "${keycloak_realm.test.id}"
 	description = "a test openid client"
 
-	standard_flow_enabled = true
+	standard_flow_enabled    = true
+	service_accounts_enabled = true
 
 	access_type = "CONFIDENTIAL"
 
@@ -418,13 +419,13 @@ resource keycloak_oidc_identity_provider oidc {
 
 resource keycloak_oidc_identity_provider custom_oidc_idp {
 	realm             = "${keycloak_realm.test.id}"
-	provider_id		  = "customIdp"
+	provider_id       = "customIdp"
 	alias             = "custom"
 	authorization_url = "https://example.com/auth"
 	token_url         = "https://example.com/token"
 	client_id         = "example_id"
 	client_secret     = "example_token"
-	extra_config = {
+	extra_config      = {
 		dummyConfig = "dummyValue"
 	}
 }
